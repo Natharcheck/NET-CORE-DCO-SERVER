@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "Z76A3aOjRaequ3D1ANEcKfXfPWfgR5sAevjaAdSysAMoQfM09Mhoa/g1KmwpAnsJxlAiUVrzfyCY555Kz/YOHA==",
+  "success": true,
+  "projectFilePath": "/Users/tt/Desktop/NET CORE DCO SERVER/NET CORE DCO SERVER.csproj",
+  "expectedPackageFiles": [
+    "/Users/tt/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.collections/4.3.0/system.collections.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.globalization/4.3.0/system.globalization.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.io/4.3.0/system.io.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.reflection/4.3.0/system.reflection.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.reflection.primitives/4.3.0/system.reflection.primitives.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.resources.resourcemanager/4.3.0/system.resources.resourcemanager.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.runtime/4.3.0/system.runtime.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.runtime.serialization.formatters/4.3.0/system.runtime.serialization.formatters.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.runtime.serialization.primitives/4.3.0/system.runtime.serialization.primitives.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.text.encoding/4.3.0/system.text.encoding.4.3.0.nupkg.sha512",
+    "/Users/tt/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}

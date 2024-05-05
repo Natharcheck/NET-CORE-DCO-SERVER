@@ -1,0 +1,5 @@
+/Users/tt/Desktop/NET CORE DCO SERVER/obj/Debug/net8.0/NET CORE DCO SERVER.csproj.AssemblyReference.cache
+/Users/tt/Desktop/NET CORE DCO SERVER/obj/Debug/net8.0/NET CORE DCO SERVER.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tt/Desktop/NET CORE DCO SERVER/obj/Debug/net8.0/NET CORE DCO SERVER.AssemblyInfoInputs.cache
+/Users/tt/Desktop/NET CORE DCO SERVER/obj/Debug/net8.0/NET CORE DCO SERVER.AssemblyInfo.cs
+/Users/tt/Desktop/NET CORE DCO SERVER/obj/Debug/net8.0/NET CORE DCO SERVER.csproj.CoreCompileInputs.cache
