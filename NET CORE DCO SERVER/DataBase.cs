@@ -67,13 +67,12 @@ namespace Server_DCO
             var client = LobbyManager.Clients[connectionId];
 
             string path = Path.Combine(PathData, PathAccount, $"{client.Username}");
+            Console.WriteLine("Save Client Data Path");
             string jsonString = JsonSerializer.Serialize(client);
-
+            Console.WriteLine("Save Client Data Serialze");
             client.RoomId = 0;
-
             File.WriteAllText(path, jsonString);
-
-            Console.WriteLine("Save Client Data");
+            Console.WriteLine("Save Client Data Write");
         }
 
 
