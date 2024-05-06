@@ -72,6 +72,8 @@ namespace Server_DCO
             client.RoomId = 0;
 
             File.WriteAllText(path, jsonString);
+
+            Console.WriteLine("Save Client Data");
         }
 
 
@@ -83,6 +85,8 @@ namespace Server_DCO
             string jsonString = JsonSerializer.Serialize(client.Mail);
             
             File.WriteAllText(path, jsonString);
+
+            Console.WriteLine("Save Client Mail");
         }
 
         public static void SaveAnalyticsData()
@@ -91,6 +95,8 @@ namespace Server_DCO
             string jsonString = JsonSerializer.Serialize(Analytics);
             
             File.WriteAllText(path, jsonString);
+
+            Console.WriteLine("Save Analytics");
         }
 
         public static void LoadAnalyticsData()
