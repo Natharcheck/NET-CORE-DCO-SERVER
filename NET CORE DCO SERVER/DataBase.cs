@@ -71,8 +71,17 @@ namespace Server_DCO
             string jsonString = JsonSerializer.Serialize(client);
             Console.WriteLine("Save Client Data Serialze");
             client.RoomId = 0;
-            File.WriteAllText(path, jsonString);
-            Console.WriteLine("Save Client Data Write");
+            
+            try
+            {
+                File.WriteAllText(path, jsonString); 
+                Console.WriteLine("Save Client Data Write");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error writing file: {ex.Message}");
+            }
+
         }
 
 
@@ -104,10 +113,17 @@ namespace Server_DCO
 
             if (File.Exists(path))
             {
-                string jsonString = File.ReadAllText(path);
+                try
+                {
+                    string jsonString = File.ReadAllText(path);
 #pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                Analytics = JsonSerializer.Deserialize<Analytics>(jsonString);
+                    Analytics = JsonSerializer.Deserialize<Analytics>(jsonString);
 #pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error writing file: {ex.Message}");
+                }
             }
         } 
 
@@ -117,10 +133,17 @@ namespace Server_DCO
 
             if (File.Exists(path))
             {
-                string jsonString = File.ReadAllText(path);
+                try
+                {
+                    string jsonString = File.ReadAllText(path);
 #pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                LobbyManager.Clients[connectionId] = JsonSerializer.Deserialize<Client>(jsonString);
+                    LobbyManager.Clients[connectionId] = JsonSerializer.Deserialize<Client>(jsonString);
 #pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error writing file: {ex.Message}");
+                }
             }
         }
         
