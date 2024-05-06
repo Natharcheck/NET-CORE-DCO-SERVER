@@ -10,7 +10,7 @@ namespace Server_DCO
     {
         public static Analytics Analytics;
         
-        private static string PathData = "/DCO/data";
+        private static string PathData = "/Root/Nathar/DCO/data";
         private static string PathAnalytics = "/analytics";
         private static string PathAccount = "/accounts";
         private static string PathMails = "/mails";
