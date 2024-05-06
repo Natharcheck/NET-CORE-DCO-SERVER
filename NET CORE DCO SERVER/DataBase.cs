@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Server_DCO
 {
@@ -9,12 +10,12 @@ namespace Server_DCO
     {
         public static Analytics Analytics;
         
-        private static readonly string PathData = "/DCO/data";
-        private static readonly string PathAnalytics = "/analytics";
-        private static readonly string PathAccount = "/accounts";
-        private static readonly string PathMails = "/mails";
+        private static string PathData = "/DCO/data";
+        private static string PathAnalytics = "/analytics";
+        private static string PathAccount = "/accounts";
+        private static string PathMails = "/mails";
 
-        public static readonly string FileExtension = ".bin";
+        public static readonly string FileExtension = ".json";
 
         public static void CreateAccount(int connectionId, string mail, string username, string password)
         {
@@ -60,20 +61,17 @@ namespace Server_DCO
             }
             
         }
-        
+
         public static void SaveClientData(int connectionId)
         {
             var client = LobbyManager.Clients[connectionId];
-            
-            Stream stream = File.Open(PathData + PathAccount + 
-                                      "/" + client.Username + FileExtension, FileMode.Create);
-            
-            BinaryFormatter bf = new BinaryFormatter();
+
+            string path = Path.Combine(PathData, PathAccount, $"{client.Username}");
+            string jsonString = JsonSerializer.Serialize(client);
 
             client.RoomId = 0;
-            
-            bf.Serialize(stream, client);
-            stream.Close();
+
+            File.WriteAllText(path, jsonString);
         }
 
 
@@ -81,88 +79,93 @@ namespace Server_DCO
         {
             var client = LobbyManager.Clients[connectionId];
             
-            Stream stream = File.Open(PathData + PathMails + "/" + 
-                                      client.Mail + FileExtension, FileMode.Create);
+            string path = Path.Combine(PathData, PathAccount, $"{client.Mail}");
+            string jsonString = JsonSerializer.Serialize(client.Mail);
             
-            BinaryFormatter bf = new BinaryFormatter();
-            
-            bf.Serialize(stream, client);
-            stream.Close();
+            File.WriteAllText(path, jsonString);
         }
 
         public static void SaveAnalyticsData()
         {
-            Stream stream = File.Open(PathData + PathAnalytics +
-                                      "/" + "Analytics" + FileExtension, FileMode.Create);
+            string path = Path.Combine(PathData, PathAccount, $"{Analytics}");
+            string jsonString = JsonSerializer.Serialize(Analytics);
             
-            BinaryFormatter bf = new BinaryFormatter();
-            
-            bf.Serialize(stream, Analytics);
-            stream.Close();
+            File.WriteAllText(path, jsonString);
         }
-        
+
         public static void LoadAnalyticsData()
         {
-            Stream stream = File.Open(PathData + PathAnalytics +
-                                      "/" + "Analytics"+ FileExtension, FileMode.Open);
-            
-            BinaryFormatter bf = new BinaryFormatter();
-            
-            Analytics = (Analytics) bf.Deserialize(stream);
-            stream.Close();
-        }
+            string path = Path.Combine(PathData, PathAnalytics, $"Analytics{FileExtension}");
+
+            if (File.Exists(path))
+            {
+                string jsonString = File.ReadAllText(path);
+#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                Analytics = JsonSerializer.Deserialize<Analytics>(jsonString);
+#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+            }
+        } 
 
         public static void LoadClientData(int connectionId, string username)
-        {
-            Stream stream = File.Open(PathData + PathAccount +
-                                      "/" + username + FileExtension, FileMode.Open);
-            
-            BinaryFormatter bf = new BinaryFormatter();
+        { 
+            string path = Path.Combine(PathData, PathAccount, $"{username}{FileExtension}");
 
-            LobbyManager.Clients[connectionId] = null;
-            LobbyManager.Clients[connectionId] = (Client) bf.Deserialize(stream);
-            stream.Close();
+            if (File.Exists(path))
+            {
+                string jsonString = File.ReadAllText(path);
+#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                LobbyManager.Clients[connectionId] = JsonSerializer.Deserialize<Client>(jsonString);
+#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+            }
         }
         
         public static void LoadClientDataForSearch(ref Client client, string username)
         {
-            Stream stream = File.Open(PathData + PathAccount +
-                                      "/" + username + FileExtension, FileMode.Open);
-            
-            BinaryFormatter bf = new BinaryFormatter();
-            
-            client = (Client) bf.Deserialize(stream);
-            stream.Close();
+            string path = Path.Combine(PathData, PathAccount, $"{username}{FileExtension}");
+
+            if (File.Exists(path))
+            {
+                string jsonString = File.ReadAllText(path);
+#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                client = JsonSerializer.Deserialize<Client>(jsonString);
+#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+            }
         }
         
         public static void LoadClientDataForList(ref Client client, string pathToFile)
         {
-            Stream stream = File.Open(pathToFile, FileMode.Open);
-            
-            BinaryFormatter bf = new BinaryFormatter();
-            
-            client = (Client) bf.Deserialize(stream);
-            stream.Close();
+            string path = Path.Combine(pathToFile, $"{client.Username}{FileExtension}");
+
+            if (File.Exists(path))
+            {
+                string jsonString = File.ReadAllText(path);
+#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                client = JsonSerializer.Deserialize<Client>(jsonString);
+#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+            }
         }
 
         public static bool IsCorrectPassword(string username, string password)
         {
-            Stream stream = File.Open(PathData + PathAccount +
-                                      "/" + username + FileExtension, FileMode.Open);
-            
-            BinaryFormatter bf = new BinaryFormatter();
+            string path = Path.Combine(PathData, PathAccount, $"{username}{FileExtension}");
+            var client = new Client();
 
-            var player = (Client) bf.Deserialize(stream);
-            if (player.Password == password)
+            if (File.Exists(path))
             {
-                stream.Close();
+                string jsonString = File.ReadAllText(path);
+                client = JsonSerializer.Deserialize<Client>(jsonString);
+            }
+
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
+            if (client.Password == password)
+            { 
                 return true;
             }
             else
             {
-                stream.Close();
                 return false;
             }
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
         }
         
         public static List<Client> GetClientsDataList()
