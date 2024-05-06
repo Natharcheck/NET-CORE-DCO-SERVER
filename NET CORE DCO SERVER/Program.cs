@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 
 namespace Server_DCO
@@ -25,7 +26,12 @@ namespace Server_DCO
         {
             while (true)
             {
+                var key = Console.ReadKey();
                 
+                if(key.Key == ConsoleKey.F2)
+                {
+                    return;
+                }
             }
         }
     }
