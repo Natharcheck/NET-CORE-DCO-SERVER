@@ -65,23 +65,15 @@ namespace Server_DCO
         public static void SaveClientData(int connectionId)
         {
             var client = LobbyManager.Clients[connectionId];
+                client.RoomId = 0;
 
-            string path = Path.Combine(PathData, PathAccount, $"{client.Username}");
-            Console.WriteLine("Save Client Data Path");
-            string jsonString = JsonSerializer.Serialize(client);
-            Console.WriteLine("Save Client Data Serialze");
-            client.RoomId = 0;
+            var name = client.Username;
+            var path = PathData + PathAccount + name + FileExtension;
+
+            var jsonString = JsonSerializer.Serialize(client);
             
-            try
-            {
-                File.WriteAllText(path, jsonString); 
-                Console.WriteLine("Save Client Data Write");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error writing file: {ex.Message}");
-            }
-
+            File.WriteAllText(path, jsonString); 
+            Console.WriteLine("Save Client File");
         }
 
 
@@ -89,111 +81,96 @@ namespace Server_DCO
         {
             var client = LobbyManager.Clients[connectionId];
             
-            string path = Path.Combine(PathData, PathAccount, $"{client.Mail}");
-            string jsonString = JsonSerializer.Serialize(client.Mail);
+            var name = client.Mail;
+            var path = PathData + PathMails + name + FileExtension;
+            
+            var jsonString = JsonSerializer.Serialize(client.Mail);
             
             File.WriteAllText(path, jsonString);
-
             Console.WriteLine("Save Client Mail");
         }
 
         public static void SaveAnalyticsData()
         {
-            string path = Path.Combine(PathData, PathAccount, $"{Analytics}");
-            string jsonString = JsonSerializer.Serialize(Analytics);
+            var name = "Analytics";
+            var path = PathData + PathAnalytics + name + FileExtension;
+            
+            var jsonString = JsonSerializer.Serialize(Analytics);
             
             File.WriteAllText(path, jsonString);
-
             Console.WriteLine("Save Analytics");
         }
 
         public static void LoadAnalyticsData()
         {
-            string path = Path.Combine(PathData, PathAnalytics, $"Analytics{FileExtension}");
+            var name = "Analytics";
+            var path = PathData + PathAnalytics + name + FileExtension;
 
             if (File.Exists(path))
             {
-                try
-                {
-                    string jsonString = File.ReadAllText(path);
-#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                    Analytics = JsonSerializer.Deserialize<Analytics>(jsonString);
-#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Error writing file: {ex.Message}");
-                }
+                var jsonString = File.ReadAllText(path);
+                Analytics = JsonSerializer.Deserialize<Analytics>(jsonString);
             }
         } 
 
         public static void LoadClientData(int connectionId, string username)
         { 
-            string path = Path.Combine(PathData, PathAccount, $"{username}{FileExtension}");
+            var name = username;
+            var path = PathData + PathAccount + name + FileExtension;
 
             if (File.Exists(path))
             {
-                try
-                {
-                    string jsonString = File.ReadAllText(path);
-#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                    LobbyManager.Clients[connectionId] = JsonSerializer.Deserialize<Client>(jsonString);
-#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Error writing file: {ex.Message}");
-                }
+                var jsonString = File.ReadAllText(path);
+                LobbyManager.Clients[connectionId] = JsonSerializer.Deserialize<Client>(jsonString);
             }
         }
         
         public static void LoadClientDataForSearch(ref Client client, string username)
         {
-            string path = Path.Combine(PathData, PathAccount, $"{username}{FileExtension}");
+            var name = username;
+            var path = PathData + PathAccount + name + FileExtension;
 
             if (File.Exists(path))
             {
-                string jsonString = File.ReadAllText(path);
-#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                var jsonString = File.ReadAllText(path);
                 client = JsonSerializer.Deserialize<Client>(jsonString);
-#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
             }
         }
         
-        public static void LoadClientDataForList(ref Client client, string pathToFile)
+        public static void LoadClientDataForList(ref Client client, string path)
         {
-            string path = Path.Combine(pathToFile, $"{client.Username}{FileExtension}");
-
             if (File.Exists(path))
             {
-                string jsonString = File.ReadAllText(path);
-#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                var jsonString = File.ReadAllText(path);
                 client = JsonSerializer.Deserialize<Client>(jsonString);
-#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
             }
         }
 
         public static bool IsCorrectPassword(string username, string password)
         {
-            string path = Path.Combine(PathData, PathAccount, $"{username}{FileExtension}");
-            var client = new Client();
-
+            var name = username;
+            var path = PathData + PathAccount + name + FileExtension;
+            
             if (File.Exists(path))
             {
-                string jsonString = File.ReadAllText(path);
-                client = JsonSerializer.Deserialize<Client>(jsonString);
-            }
+                var client = new Client();
 
-#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
-            if (client.Password == password)
-            { 
-                return true;
+                var jsonString = File.ReadAllText(path);
+                client = JsonSerializer.Deserialize<Client>(jsonString);
+
+                if (client.Password == password)
+                { 
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return false;
             }
-#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
         }
         
         public static List<Client> GetClientsDataList()
