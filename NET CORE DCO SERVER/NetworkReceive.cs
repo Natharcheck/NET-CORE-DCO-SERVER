@@ -151,7 +151,7 @@ namespace Server_DCO
 
             if (Database.AccountExist(username))
             {
-                if (Database.IsCorrectPassword(username, password))
+                if (Database.IsCorrectPassword(connectionId, username, password))
                 {
                     NetworkSend.LoadData(connectionId, username);
                 }
