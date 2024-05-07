@@ -14,7 +14,7 @@ namespace Server_DCO
         private static string PathAccount = "/accounts/";
         private static string PathMails = "/mails/";
 
-        public static readonly string FileExtension = ".json";
+        public static readonly string FileExtension = ".bin";
 
         public static void CreateAccount(int connectionId, string mail, string username, string password)
         {
@@ -156,11 +156,22 @@ namespace Server_DCO
         { 
             var name = username;
             var path = PathData + PathAccount + name + FileExtension;
+            var client = LobbyManager.Clients[connectionId];
 
             if (File.Exists(path))
             {
-                var jsonString = File.ReadAllText(path);
-                LobbyManager.Clients[connectionId] = JsonSerializer.Deserialize<Client>(jsonString);
+                using(FileStream stream = new FileStream(path, FileMode.Open))
+                {
+                    using (BinaryReader reader = new BinaryReader(stream))
+                    {
+                        client.Username = reader.ReadString();
+                        client.Password = reader.ReadString();
+                        client.OutMoney = reader.ReadInt32();
+                        client.Money = reader.ReadInt32();
+                        client.Coins = reader.ReadInt32();
+                        client.Rank = reader.ReadInt32();
+                    }
+                }
             }
         }
         
