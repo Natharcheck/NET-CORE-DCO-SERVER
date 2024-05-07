@@ -19,8 +19,6 @@ namespace Server_DCO
             NetworkConfig.socket.StartListening(8000,5, 1);
             Database.CorrectPath();
 
-            Database.SaveAnalyticsData();
-
             Console.WriteLine("Server started.");
         }
 
