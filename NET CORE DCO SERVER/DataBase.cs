@@ -196,17 +196,16 @@ namespace Server_DCO
             }
         }
 
-        public static bool IsCorrectPassword(string username, string password)
+        public static bool IsCorrectPassword(int connectionId, string username, string password)
         {
             var name = username;
             var path = PathData + PathAccount + name + FileExtension;
             
             if (File.Exists(path))
             {
-                var client = new Client();
+                var client = LobbyManager.Clients[connectionId];
 
-                var jsonString = File.ReadAllText(path);
-                client = JsonSerializer.Deserialize<Client>(jsonString);
+                LoadClientData(connectionId, username);
 
                 if (client.Password == password)
                 { 
@@ -242,12 +241,12 @@ namespace Server_DCO
 
         public static bool AccountExist(string username)
         {
-            return File.Exists(PathData + PathAccount + "/" + username + FileExtension);
+            return File.Exists(PathData + PathAccount + username + FileExtension);
         }
         
         public static bool MailExist(string mail)
         {
-            return File.Exists(PathData + PathMails + "/" + mail + FileExtension);
+            return File.Exists(PathData + PathMails + mail + FileExtension);
         }
     }
 }
