@@ -11,6 +11,8 @@ namespace Server_DCO
 
             Clients.Add(connectionId, client);
             Database.Analytics.CurrentUsers = Clients.Count;
+
+            Database.CreateAccount(connectionId, "ilopuke@gmail.com", "admin", "admin");
         }
         
         public static void RemoveAccount(int connectionId)

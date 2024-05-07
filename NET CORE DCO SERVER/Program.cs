@@ -19,8 +19,6 @@ namespace Server_DCO
             NetworkConfig.socket.StartListening(8000,5, 1);
             Database.CorrectPath();
 
-            Database.CreateAccount(1, "ilopuke@gmail.com", "admin", "admin");
-
             Console.WriteLine("Server started.");
         }
 
