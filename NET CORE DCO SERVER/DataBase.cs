@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Server_DCO
 {
@@ -10,10 +9,10 @@ namespace Server_DCO
     {
         public static Analytics Analytics;
         
-        private static string PathData = "/Root/Nathar/DCO/data";
-        private static string PathAnalytics = "/analytics";
-        private static string PathAccount = "/accounts";
-        private static string PathMails = "/mails";
+        private static string PathData = "/Users/tt/Desktop/NET CORE DCO SERVER/data";
+        private static string PathAnalytics = "/analytics/";
+        private static string PathAccount = "/accounts/";
+        private static string PathMails = "/mails/";
 
         public static readonly string FileExtension = ".json";
 
@@ -52,7 +51,7 @@ namespace Server_DCO
             {
                 Directory.CreateDirectory(PathData + PathAnalytics);
                 
-                if (!File.Exists(PathData + PathAnalytics + "/" + "Analytics"))
+                if (!File.Exists(PathData + PathAnalytics + "Analytics"))
                     SaveAnalyticsData();
                 else
                 {
@@ -70,7 +69,7 @@ namespace Server_DCO
             var name = client.Username;
             var path = PathData + PathAccount + name + FileExtension;
 
-            var jsonString = JsonSerializer.Serialize(client);
+            var jsonString = JsonSerializer.Serialize<Client>(client);
             
             File.WriteAllText(path, jsonString); 
             Console.WriteLine("Save Client File");
@@ -95,7 +94,7 @@ namespace Server_DCO
             var name = "Analytics";
             var path = PathData + PathAnalytics + name + FileExtension;
             
-            var jsonString = JsonSerializer.Serialize(Analytics);
+            var jsonString = JsonSerializer.Serialize<Analytics>(Analytics);
             
             File.WriteAllText(path, jsonString);
             Console.WriteLine("Save Analytics");
