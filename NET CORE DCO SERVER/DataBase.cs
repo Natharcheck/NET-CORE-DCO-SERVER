@@ -9,7 +9,7 @@ namespace Server_DCO
     {
         public static Analytics Analytics;
         
-        private static string PathData = "/Users/tt/Desktop/NET CORE DCO SERVER/data";
+        private static string PathData = "/Root/Nathar/DCO/data";
         private static string PathAnalytics = "/analytics/";
         private static string PathAccount = "/accounts/";
         private static string PathMails = "/mails/";
@@ -69,9 +69,19 @@ namespace Server_DCO
             var name = client.Username;
             var path = PathData + PathAccount + name + FileExtension;
 
-            var jsonString = JsonSerializer.Serialize<Client>(client);
-            
-            File.WriteAllText(path, jsonString); 
+            using(FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    writer.Write(client.Username);
+                    writer.Write(client.Password);
+                    writer.Write(client.OutMoney);
+                    writer.Write(client.Money);
+                    writer.Write(client.Coins);
+                    writer.Write(client.Rank);
+                }
+            }
+
             Console.WriteLine("Save Client File");
         }
 
@@ -83,9 +93,15 @@ namespace Server_DCO
             var name = client.Mail;
             var path = PathData + PathMails + name + FileExtension;
             
-            var jsonString = JsonSerializer.Serialize(client.Mail);
-            
-            File.WriteAllText(path, jsonString);
+            using(FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    writer.Write(client.Username);
+                    writer.Write(client.Mail);
+                }
+            }
+ 
             Console.WriteLine("Save Client Mail");
         }
 
@@ -94,9 +110,20 @@ namespace Server_DCO
             var name = "Analytics";
             var path = PathData + PathAnalytics + name + FileExtension;
             
-            var jsonString = JsonSerializer.Serialize<Analytics>(Analytics);
-            
-            File.WriteAllText(path, jsonString);
+            using(FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    writer.Write(Analytics.Commission);
+                    writer.Write(Analytics.CommissionOutput);
+                    writer.Write(Analytics.CurrentMoney);
+                    writer.Write(Analytics.CurrentRooms);
+                    writer.Write(Analytics.CurrentUsers);
+                    writer.Write(Analytics.MaxMoney);
+                    writer.Write(Analytics.MaxUsers);
+                }
+            }
+
             Console.WriteLine("Save Analytics");
         }
 
@@ -107,8 +134,21 @@ namespace Server_DCO
 
             if (File.Exists(path))
             {
-                var jsonString = File.ReadAllText(path);
-                Analytics = JsonSerializer.Deserialize<Analytics>(jsonString);
+                using(FileStream stream = new FileStream(path, FileMode.Open))
+                {
+                    using (BinaryReader reader = new BinaryReader(stream))
+                    {
+                        Analytics.Commission = reader.ReadInt32();
+                        Analytics.CommissionOutput = reader.ReadInt32();
+                        Analytics.CurrentMoney = reader.ReadSingle();
+                        Analytics.CurrentRooms = reader.ReadInt32();
+                        Analytics.CurrentUsers = reader.ReadInt32();
+                        Analytics.MaxMoney = reader.ReadSingle();
+                        Analytics.MaxUsers = reader.ReadInt32();
+                    }
+                }
+
+                Console.WriteLine("Load Analytics");
             }
         } 
 
