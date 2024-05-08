@@ -120,6 +120,8 @@ namespace Server_DCO
             var isOutput = buffer.ReadBoolean();
 
             NetworkSend.SendClientList(connectionId, isOutput);
+
+            buffer.Dispose();
         }
 
         private static void PacketGetClientByUsername(int connectionId, ref byte[] data)
@@ -151,9 +153,11 @@ namespace Server_DCO
 
             if (Database.AccountExist(username))
             {
+                Console.WriteLine("Account Exist");
                 if (Database.IsCorrectPassword(connectionId, username, password))
                 {
                     NetworkSend.LoadData(connectionId, username);
+                    Console.WriteLine("Load Data");
                 }
                 else
                 {
@@ -175,6 +179,8 @@ namespace Server_DCO
             var mail = buffer.ReadString();
             var username = buffer.ReadString();
             var password = buffer.ReadString();
+
+            Console.WriteLine("Packet Registration");
 
             if (Database.MailExist(mail))
             {
